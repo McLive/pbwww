@@ -1,4 +1,4 @@
-var API = (function(baseurl) {
+var API = (function (baseurl) {
 
     // method, args, uri
     function request(options) {
@@ -23,7 +23,7 @@ var API = (function(baseurl) {
 
         var fd = new FormData();
 
-        $.each(data, function(key, value) {
+        $.each(data, function (key, value) {
             fd.append(key, value);
         });
 
@@ -37,7 +37,7 @@ var API = (function(baseurl) {
             args: {
                 dataType: 'text',
                 accepts: {
-                    text: "application/json",
+                    text: "application/json"
                 }
             }
         });
@@ -66,7 +66,6 @@ var API = (function(baseurl) {
     }
 
     // paste
-
     function paste_delete(uuid) {
 
         return request({
@@ -76,7 +75,6 @@ var API = (function(baseurl) {
     }
 
     // url
-
     function url_post(data) {
 
         return post(data, 'u');
@@ -89,16 +87,16 @@ var API = (function(baseurl) {
             post: post,
             put: put,
             delete: paste_delete,
-            get: get,
+            get: get
         },
         url: {
             post: url_post
-        },
+        }
     }
 });
 
 
-var WWW = (function(undefined) {
+var WWW = (function (undefined) {
 
     function init() {
         $('#datetime').datetimepicker({
@@ -112,7 +110,7 @@ var WWW = (function(undefined) {
                 today: 'fa fa-compass',
                 clear: 'fa fa-trash',
                 close: 'fa fa-remove'
-            },
+            }
         });
     }
 
@@ -123,18 +121,20 @@ var WWW = (function(undefined) {
 
         target.append(alert);
 
-        return { title: function (title, message, link) {
-            var title, strong;
-            if (link !== undefined)
-                message = $('<a>')
-                .attr('href', link)
-                .text(message);
+        return {
+            title: function (title, message, link) {
+                var title, strong;
+                if (link !== undefined)
+                    message = $('<a>')
+                        .attr('href', link)
+                        .text(message);
 
-            strong = $('<strong>').text(title);
-            title = $('<div>').append(strong).append(': ').append(message);
+                strong = $('<strong>').text(title);
+                title = $('<div>').append(strong).append(': ').append(message);
 
-            return alert.append(title);
-        }}
+                return alert.append(title);
+            }
+        }
     }
 
     function clear() {
@@ -179,15 +179,15 @@ var WWW = (function(undefined) {
         if (content_only == true)
             return fd;
 
-        $('.api-input:checkbox').each(function() {
-            var value = + $(this).is(':checked'),
+        $('.api-input:checkbox').each(function () {
+            var value = +$(this).is(':checked'),
                 name = $(this).attr('name');
 
             if (value)
                 fd.append(name, value);
-        })
+        });
 
-        $('.api-input:text:enabled').each(function() {
+        $('.api-input:text:enabled').each(function () {
             var value = $(this).val(),
                 name = $(this).attr('name');
 
@@ -207,7 +207,7 @@ var WWW = (function(undefined) {
 
         var alert = alert_new();
 
-        $.each(status_keys, function(index, key) {
+        $.each(status_keys, function (index, key) {
             var title,
                 value = data[key];
 
@@ -233,7 +233,7 @@ var WWW = (function(undefined) {
 
     function set_content(data, xhr) {
 
-        var ct = xhr.getResponseHeader('content-type')
+        var ct = xhr.getResponseHeader('content-type');
         if (ct.startsWith("text/")) {
             $('#content').val(data);
         } else {
@@ -271,7 +271,7 @@ var WWW = (function(undefined) {
     };
 });
 
-$(function() {
+$(function () {
     var getUrl = window.location;
     var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 
@@ -283,7 +283,7 @@ $(function() {
             fd = app.paste_data(),
             fn = api.paste[e.data('method')];
 
-        return fn(fd, e.uri()).done(function(data) {
+        return fn(fd, e.uri()).done(function (data) {
             app.set_uuid(data);
         });
     }
@@ -293,44 +293,44 @@ $(function() {
             return xhr.responseJSON;
         try {
             return $.parseJSON(xhr.responseText);
-        } catch(err) {
+        } catch (err) {
             return {}
         }
     }
 
     var _xhr = $.ajaxSettings.xhr;
-    $.ajaxSettings.xhr = function() {
+    $.ajaxSettings.xhr = function () {
         var res = _xhr();
-        res.upload.addEventListener('progress', function(event) {
+        res.upload.addEventListener('progress', function (event) {
             $('.progress-bar').width(event.loaded / event.total * 100 + "%");
         });
         return res;
-    }
+    };
 
     $.fn.extend({
-        click: function(fn) {
+        click: function (fn) {
             if (arguments.length == 0)
                 return $(this).trigger('click');
-	    $(this).on('click', function(event) {
+            $(this).on('click', function (event) {
                 event.preventDefault();
                 fn(event);
                 event.target.blur();
             });
         },
-        sclick: function(fn) {
-            $(this).click(function(event) {
+        sclick: function (fn) {
+            $(this).click(function (event) {
                 var spinner = $(event.target).find('.fa-spinner'),
                     progress = $('.progress');
                 spinner.removeClass('hidden');
                 progress.removeClass('hidden');
 
-                fn(event).always(function() {
+                fn(event).always(function () {
                     spinner.addClass('hidden');
                     progress.addClass('hidden');
                     $('.progress-bar').width('0%');
-                }).done(function(data) {
+                }).done(function (data) {
                     app.api_status(data);
-                }).fail(function(xhr, status, error) {
+                }).fail(function (xhr, status, error) {
                     var s = try_json(xhr);
                     console.log(xhr);
                     s[status] = error;
@@ -338,7 +338,7 @@ $(function() {
                 });
             });
         },
-        uri: function(value) {
+        uri: function (value) {
             uri = $(this).data('uri');
             if (uri !== undefined) {
                 if (arguments.length != 0)
@@ -348,20 +348,20 @@ $(function() {
         }
     });
 
-    $('#clear').click(function(event) {
+    $('#clear').click(function (event) {
         app.clear();
         $("#content").focus();
     });
 
-    $('#file-input').change(function(event) {
+    $('#file-input').change(function (event) {
         app.select_file();
     });
 
-    $('#file').click(function(event) {
+    $('#file').click(function (event) {
         $('#file-input').click();
     });
 
-    $('#shorturl').sclick(function(event) {
+    $('#shorturl').sclick(function (event) {
         var fd = app.url_data();
 
         return api.url.post(fd);
@@ -370,21 +370,21 @@ $(function() {
     $('#paste').sclick(paste_submit);
     $('#update').sclick(paste_submit);
 
-    $('#delete').sclick(function(event) {
-        var e = $(event.target)
-        return api.paste.delete(e.uri()).done(function(data) {
+    $('#delete').sclick(function (event) {
+        var e = $(event.target);
+        return api.paste.delete(e.uri()).done(function (data) {
             e.uri('');
         });
     });
 
-    $('#load').sclick(function(event) {
-        var e = $(event.target)
-        return api.paste.get(e.uri()).done(function(data, status, xhr) {
+    $('#load').sclick(function (event) {
+        var e = $(event.target);
+        return api.paste.get(e.uri()).done(function (data, status, xhr) {
             app.set_content(data, xhr);
         });
     });
 
-    $('#paste-form').submit(function(event) {
+    $('#paste-form').submit(function (event) {
         event.preventDefault();
     });
 
