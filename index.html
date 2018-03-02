@@ -21,7 +21,13 @@
 
     <script id="index-script" src="/js/index.js"></script>
 
-    <style id="index-style"></style>
+    <style id="index-style">
+      input[type=checkbox]:checked ~ label {
+        color: #333;
+        background-color: #E6E6E6;
+        border-color: #ADADAD;
+      }
+    </style>
   </head>
   <body>
     <div id="stash" class="hidden" aria-hidden="true">
