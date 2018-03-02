@@ -272,8 +272,10 @@ var WWW = (function(undefined) {
 });
 
 $(function() {
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[1];
 
-    var api = API('https://ptpb.pw/');
+    var api = API(baseUrl);
     var app = WWW();
 
     function paste_submit(event) {
