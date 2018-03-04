@@ -44,7 +44,6 @@ var API = (function (baseurl) {
     }
 
     function put(data, uri) {
-
         return request({
             method: 'PUT',
             uri: uri,
@@ -55,7 +54,6 @@ var API = (function (baseurl) {
     }
 
     function post(data, uri) {
-
         return request({
             method: 'POST',
             uri: uri,
@@ -67,7 +65,6 @@ var API = (function (baseurl) {
 
     // paste
     function paste_delete(uuid) {
-
         return request({
             method: 'DELETE',
             uri: uuid
@@ -76,12 +73,10 @@ var API = (function (baseurl) {
 
     // url
     function url_post(data) {
-
         return post(data, 'u');
     }
 
     //
-
     return {
         paste: {
             post: post,
@@ -115,7 +110,6 @@ var WWW = (function (undefined) {
     }
 
     function alert_new() {
-
         var alert = $('#stash').find('.alert').clone();
         var target = $('#alert-col');
 
@@ -138,7 +132,6 @@ var WWW = (function (undefined) {
     }
 
     function clear() {
-
         $("#file-input").addClass('hidden');
         $('input').val('');
         $('textarea').val('');
@@ -152,7 +145,6 @@ var WWW = (function (undefined) {
     }
 
     function select_file() {
-
         var filename = $('#file-input').prop('files')[0].name;
 
         $('#content').addClass('hidden');
@@ -163,7 +155,6 @@ var WWW = (function (undefined) {
     }
 
     function paste_data(content_only) {
-
         var file, content,
             fd = new FormData();
 
@@ -201,7 +192,6 @@ var WWW = (function (undefined) {
     var status_keys = ['status', 'uuid', 'sunset', 'error'];
 
     function api_status(data) {
-
         if (!Object.prototype.isPrototypeOf(data))
             return;
 
@@ -222,7 +212,6 @@ var WWW = (function (undefined) {
     }
 
     function set_uuid(data) {
-
         var uuid = data.uuid;
 
         if (uuid === undefined)
@@ -232,8 +221,7 @@ var WWW = (function (undefined) {
     }
 
     function set_content(data, xhr) {
-
-        var ct = xhr.getResponseHeader('content-type');
+        var ct = xhr.getResponseHeader('content-type')
         if (ct.startsWith("text/")) {
             $('#content').val(data);
         } else {
@@ -242,7 +230,6 @@ var WWW = (function (undefined) {
     }
 
     function url_data() {
-
         return {
             content: $('#content').val()
         }
@@ -255,6 +242,9 @@ var WWW = (function (undefined) {
 
         hidden.removeClass('hidden').prop('disabled', false);
         visible.addClass('hidden').prop('disabled', true);
+
+        var sunset_seconds = document.querySelector('#sunset-seconds');
+        sunset_seconds.classList.toggle('hidden');
     }
 
     return {
@@ -346,6 +336,12 @@ $(function () {
                 return $(uri).val();
             }
         }
+    });
+
+    $('button[name="secondsbutton"]').click(function (event) {
+        var e = $(event.target);
+        var fired_button = e.val();
+        $('#seconds').val(fired_button);
     });
 
     $('#clear').click(function (event) {
